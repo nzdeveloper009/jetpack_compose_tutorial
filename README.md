@@ -10,6 +10,10 @@ Jetpack Compose is a modern toolkit for building Android user interfaces. It all
 
 This tutorial series will guide you through building a simple Android application using Jetpack Compose. You will learn the basics of Compose, including how to create layouts, handle user input, and navigate between screens. By the end of the tutorial, you will have a functional app that you can run on your Android device or emulator.
 
+## Official Documentation
+
+Link -> [Documentation](https://developer.android.com/jetpack/compose)
+
 ## Prerequisites
 
 To follow along with this tutorial, you will need:
