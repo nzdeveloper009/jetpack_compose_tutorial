@@ -5,11 +5,16 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -157,25 +162,67 @@ private fun boxCompose() {
 
 /*
 * Example of layout
+* Modifiers
+*   To modify size, display, appearance and behaviour of the Composable
+*   Size, Background Colour, Paddings, Click Handlers
+*   Composition over Inheritance
+*   Can be chained and Sequence matters here.
 * */
 
 @Composable
-private fun ListViewItem() {
-    Row {
+private fun ListViewItem(imgId: Int, name: String, occupation: String, modifier: Modifier) {
+    Row(
+        modifier.padding(8.dp),
+    ) {
         Image(
             painter = painterResource(
-                id = R.drawable.ic_person_pin
+                id = imgId
             ),
             contentDescription = "Person Pin",
+            Modifier.size(40.dp)
         )
         Column() {
             Text(
-                text = "Syed Nokhaiz Al Hassan",
+                text = name,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = occupation,
                 fontWeight = FontWeight.Thin,
                 fontSize = 12.sp
             )
         }
     }
+}
+
+
+@Composable
+private fun modifierExample() {
+    Text(
+        text = "Hello",
+        color = Color.White,
+        modifier = Modifier
+            .clickable { }
+            .background(Color.Blue)
+            .size(200.dp)
+            .padding(36.dp)
+            .border(4.dp, Color.Red)
+            .clip(CircleShape)
+            .background(Color.Yellow)
+            .fillMaxSize() // full width + heigh cover
+    )
+}
+
+@Composable
+private fun CircularImage() {
+    Image(
+        painter = painterResource(id = R.drawable.syed_nokhaiz_al_hassan),
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.size(80.dp)
+            .clip(CircleShape)
+            .border(2.dp, Color.LightGray, CircleShape),
+        contentDescription = "Syed Nokhaiz Al Hassan Image"
+    )
 }
 
 @Preview(
@@ -191,5 +238,11 @@ private fun previewFunction() {
 //    colCompose()
 //    rowCompose()
 //    boxCompose()
-    ListViewItem()
+    /*Column() {
+        ListViewItem(R.drawable.ic_person_pin,"Syed Nokhaiz Al Hassan","Mobile App Developer")
+        ListViewItem(R.drawable.ic_person_pin,"Syed Nokhaiz Al Hassan","Mobile App Developer")
+        ListViewItem(R.drawable.ic_person_pin,"Syed Nokhaiz Al Hassan","Mobile App Developer")
+    }*/
+//    modifierExample()
+    CircularImage()
 }
