@@ -209,7 +209,7 @@ private fun modifierExample() {
             .border(4.dp, Color.Red)
             .clip(CircleShape)
             .background(Color.Yellow)
-            .fillMaxSize() // full width + heigh cover
+            .fillMaxSize() // full width + height cover
     )
 }
 
@@ -244,5 +244,6 @@ private fun previewFunction() {
         ListViewItem(R.drawable.ic_person_pin,"Syed Nokhaiz Al Hassan","Mobile App Developer")
     }*/
 //    modifierExample()
-    CircularImage()
+//    CircularImage()
+    previewItem()
 }
