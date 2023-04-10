@@ -11,7 +11,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,14 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nzdevelope009.jetpackcompose.ui.theme.JetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -218,11 +219,103 @@ private fun CircularImage() {
     Image(
         painter = painterResource(id = R.drawable.syed_nokhaiz_al_hassan),
         contentScale = ContentScale.Crop,
-        modifier = Modifier.size(80.dp)
+        modifier = Modifier
+            .size(80.dp)
             .clip(CircleShape)
             .border(2.dp, Color.LightGray, CircleShape),
         contentDescription = "Syed Nokhaiz Al Hassan Image"
     )
+}
+
+@Composable
+private fun Recomposable() {
+    val state = remember {
+        mutableStateOf(0.0)
+    }
+    Log.d("TAGGED", "Recomposable: Logged during Initial Composition")
+    Button(onClick = {
+        state.value = Math.random()
+    }) {
+        Log.d("TAGGED", "Recomposable: Logged Both Composition & Recomposition")
+        Text(text = state.value.toString())
+    }
+}
+
+
+// StateFul composable
+// Uni-Directional Composable -> Top level to down way data flow (Parent to child data flow)
+// Button Click Event Down to Up that's called Uni-Directional Composable
+@Composable
+fun NotificationScreen() {
+    // State Hoisting
+    var count = rememberSaveable {
+        mutableStateOf(0)
+    }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(1f)
+    ) {
+
+        NotificationCounter(count.value, { count.value++ })
+        MessageBar(count.value)
+    }
+}
+
+// StateLess composable
+@Composable
+fun NotificationCounter(count: Int, increment: () -> Unit) {
+    // just remember the state of value and recompose the composable function
+    // but when we change the layout or change the configuration
+    // value become zero and composable function again come to initial state
+    /*var count = remember {
+        mutableStateOf(0)
+    }*/
+
+    // to solve above problem we use rememberSaveable instead of remember
+    /*var count = rememberSaveable {
+        mutableStateOf(0)
+    }
+    Column(
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "You have sent $count notification")
+        Button(onClick = {
+            count++
+            Log.d("TAGGED", "NotificationCounter: Button Clicked")
+        }) {
+            Text(text = "Send Notification")
+        }
+    }*/
+
+    Column(
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "You have sent $count notification")
+        Button(onClick = { increment() }) {
+            Text(text = "Send Notification")
+        }
+    }
+}
+
+// StateLess composable
+@Composable
+fun MessageBar(count: Int) {
+    Card(
+        elevation = 4.dp
+    ) {
+        Row(
+            Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                imageVector = Icons.Outlined.Favorite,
+                contentDescription = "",
+                Modifier.padding(4.dp)
+            )
+            Text(text = "Messages sent so far - $count")
+        }
+    }
 }
 
 @Preview(
@@ -245,5 +338,7 @@ private fun previewFunction() {
     }*/
 //    modifierExample()
 //    CircularImage()
-    previewItem()
+//    previewItem()
+//    Recomposable()
+    NotificationScreen()
 }
